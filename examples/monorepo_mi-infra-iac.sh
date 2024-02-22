@@ -5,7 +5,7 @@ set -e
 source ./monorepo.lib.bash
 
 monorepo__main \
-  mi-infra-iac  \
+  mi-infra-iac#main  \
   git@github.com:unhaggle/centralpanel-cluster,apps/centralpanel \
   git@github.com:unhaggle/creditapp-cluster,apps/creditapp \
   git@github.com:unhaggle/peb-cluster,apps/peb \

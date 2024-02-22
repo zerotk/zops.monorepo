@@ -13,8 +13,12 @@ popd () {
   command popd "$@" > /dev/null
 }
 
+
+MONOREPO_COLOR='\033[0;34m'
+MONOREPO_RESET='\033[0m'
+
 function monorepo__title () {
-  echo "monorepo: ************************************************************************ $*"
+  echo -e "${MONOREPO_COLOR}monorepo: ************************************************************************ $*${MONOREPO_RESET}"
 }
 
 function monorepo__rebase_it () {
@@ -162,9 +166,11 @@ function monorepo__clone () {
     git sync
     popd $repo_local
   fi
-  pushd $repo_local
-  git filter-repo --to-subdirectory-filter=$repo_path
-  popd
+  if [[ -n $repo_path ]]; then
+    pushd $repo_local
+    git filter-repo --to-subdirectory-filter=$repo_path
+    popd
+  fi
 }
 
 function monorepo__check () {
@@ -196,9 +202,9 @@ function monorepo__main () {
   mkdir -p sources
   mkdir -p logs
   rm -rf target
-  mkdir -p target
 
   monorepo__title "Creating target repository (monorepo)"
+  mkdir -p target
   pushd target
     git init --initial-branch=main .
     echo $REPO_NAME >> README.md
